@@ -1,5 +1,4 @@
 
-
 const listOfLinks = document.querySelector("ul.links-list");
 
 const toggleMenu = document.querySelector(".toggle-menu")
@@ -23,30 +22,48 @@ window.addEventListener("scroll",(e)=>{
     }
 })
 
-/*Active links */
+/*Active links And Smooth Scroll*/
 
-const links = document.querySelectorAll("nav ul a");
+const links = document.querySelectorAll("nav ul li a");
 const sections = document.querySelectorAll("section");
 
 links.forEach(function(link){
     link.addEventListener("click",(e)=>{
+        e.preventDefault();
+        console.log(link);
+        let section = document.querySelector(link.getAttribute("href"));
+        // window.scrollTo({
+        //     top:section.offsetTop - header.getBoundingClientRect().height,
+        //     left:0,
+        //     behavior:"smooth"
+        // })
+        /// Another Way
+        section.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        })
+        ///
         links.forEach(l => l.classList.remove("active"));
         link.classList.add("active")
     })
 })
 
+//  
+
 window.addEventListener("scroll",(e)=>{
     sections.forEach((section)=>{
-        const secTop = section.getBoundingClientRect().top;
-        const link = document.querySelector(`a[href="#${section.id}"]`)
-        const headerHeight = header.getBoundingClientRect().height
-        if(secTop - headerHeight <= 0){
-            links.forEach(l => l.classList.remove("active"));
-            link.classList.add("active")
+        const sectionTop = section.getBoundingClientRect().top;
+        const headerHeight = header.getBoundingClientRect().height;
+        if(sectionTop -headerHeight <= 0 ){
+            // Get the link
+            const activeLink = document.querySelector(`a[href='#${section.id}']`)
+            // Remove active class from all links
+            links.forEach(link => link.classList.remove("active"))
+            //Add active link to the section that in the viewport
+            activeLink.classList.add("active")
         }
     })
 })
-
 
 /****************************The Slider**********************************/
 
